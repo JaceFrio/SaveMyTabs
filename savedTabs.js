@@ -31,6 +31,22 @@ colorOneInput.addEventListener('change', (event) => {
   }
 })
 
+saveTabsButton[0].addEventListener('mouseover', async function() { 
+  saveTabsButtonText.style.color = colorTheme
+})
+
+saveTabsButton[0].addEventListener('mouseout', async function() { 
+  saveTabsButtonText.style.color = 'white'
+})
+
+colorOption.forEach(e => {
+  e.addEventListener('click', async function() {
+    let color = rgb2hex(getComputedStyle(e).backgroundColor)
+    colorOneInput.value = color.slice(1)
+    setColors(color)
+  })
+})
+
 document.addEventListener('DOMContentLoaded', async function() {
   let groupLocalStorage = await chrome.storage.sync.get(null)
   let storedGroupKeys = Object.keys(groupLocalStorage)
@@ -49,13 +65,18 @@ document.addEventListener('DOMContentLoaded', async function() {
           }
         }
         else {
-          savedTabsSetHTML += `<h3> Group ${groupNum} </h3>`
+          if (storedGroup[0].groupName != "") {
+            savedTabsSetHTML += `<h3> ${storedGroup[0].groupName} </h3>`
+          }
+          else {
+            savedTabsSetHTML += `<h3> Group </h3>`
+          }
         }
         groupNum++
         for (tab of storedGroup) {
           savedTabsSetHTML += `
           <div>
-            <p> <b> ${tab.title} </b> <br> ${tab.url} </p>
+            <p> <b> ${tab.tab.title} </b> <br> ${tab.tab.url} </p>
           </div>
           `
         }
@@ -66,24 +87,10 @@ document.addEventListener('DOMContentLoaded', async function() {
   }
 
   let colorSetting = await chrome.storage.sync.get('color')
-  colorOneInput.value = colorSetting.color.slice(1)
-  setColors(colorSetting.color)
-})
-
-saveTabsButton[0].addEventListener('mouseover', async function() { 
-  saveTabsButtonText.style.color = colorTheme
-})
-
-saveTabsButton[0].addEventListener('mouseout', async function() { 
-  saveTabsButtonText.style.color = 'white'
-})
-
-colorOption.forEach(e => {
-  e.addEventListener('click', async function() {
-    let color = rgb2hex(getComputedStyle(e).backgroundColor)
-    colorOneInput.value = color.slice(1)
-    setColors(color)
-  })
+  if (colorSetting.color) {
+    colorOneInput.value = colorSetting.color.slice(1)
+    setColors(colorSetting.color)
+  }
 })
 
 saveTabsButton[0].addEventListener('click', async function() {
@@ -94,22 +101,34 @@ saveTabsButton[0].addEventListener('click', async function() {
     let prevTabGroup = 1
     let currentGroup = 0
     for (tab of tabs) {
-      // TODO: Continue from here.
-      let groupName = ""
       if (tab.groupId == -1) {
         if (tab.url != 'chrome://newtab/') {
-          groups[0].push(tab)
+          groups[0].push({
+            tab: tab, 
+            groupName: "No Group"
+          })
         }
       }
       else {
+        let tabGroupInfo = await chrome.tabGroups.get(tab.groupId)
+        let groupTitle = tabGroupInfo.title
+        let groupColor = tabGroupInfo.color
         if (prevTabGroup == tab.groupId) {
-          groups[currentGroup].push(tab)
+          groups[currentGroup].push({ 
+            tab: tab, 
+            groupName: groupTitle,
+            groupColor: groupColor
+          })
         }
         else {
           prevTabGroup = tab.groupId
           currentGroup++
           groups.push([])
-          groups[currentGroup].push(tab)
+          groups[currentGroup].push({ 
+            tab: tab, 
+            groupName: groupTitle,
+            groupColor: groupColor
+          })
         }
       }
     }
@@ -133,13 +152,19 @@ saveTabsButton[0].addEventListener('click', async function() {
         }
       }
       else {
-        savedTabsSetHTML += `<h3> Group ${groupNum} </h3>`
+        if (group[0].groupName != "") {
+          console.log(group[0].groupName)
+          savedTabsSetHTML += `<h3> ${group[0].groupName} </h3>`
+        }
+        else {
+          savedTabsSetHTML += `<h3> Group </h3>`
+        }
       }
       groupNum++
       for (tab of group) {
         savedTabsSetHTML += `
         <div>
-          <p> <b> ${tab.title} </b> <br> ${tab.url} </p>
+          <p> <b> ${tab.tab.title} </b> <br> ${tab.tab.url} </p>
         </div>
         `
       }
@@ -160,28 +185,26 @@ saveTabsButton[0].addEventListener('click', async function() {
 })
 
 $(document).on('click', 'body > div.savedTabContainer > div', async function(e) {
-  let groupKey = await e.currentTarget.className
+  let groupKey = await e.currentTarget.className.slice(0, -19)
   let storedValue = await chrome.storage.sync.get(groupKey)
-  console.log(storedValue)
   let storedGroups = Object.values(storedValue)[0]
-  console.log(storedGroups)
   let groupNum = 0
   for (storedGroup of storedGroups[1]) {
     if (groupNum == 0) {
       if (storedGroup.length !== 0) {
         for (tab of storedGroup) {
-          await chrome.tabs.create({ url: tab.url })
+          await chrome.tabs.create({ url: tab.tab.url })
         }
       }
     }
     else {
       let tabIds = []
       for (tab of storedGroup) {
-        let newTab = await chrome.tabs.create({ url: tab.url })
+        let newTab = await chrome.tabs.create({ url: tab.tab.url })
         tabIds.push(newTab.id)
       }
-      console.log(tabIds)
-      await chrome.tabs.group({tabIds: tabIds})
+      let newGroup = await chrome.tabs.group({tabIds: tabIds})
+      await chrome.tabGroups.update(newGroup, {title: storedGroup[0].groupName, color: storedGroup[0].groupColor})
     }
     groupNum++
   }
@@ -191,6 +214,3 @@ $(document).on('click', 'body > div.savedTabContainer > div', async function(e) 
     await chrome.tabs.update(firstTab[0].id, {selected: true, highlighted: true, active: true})
   })
 })
-
-// TODO: Update to include tab group names and colors
-// TODO: Add a close window checkbox option
