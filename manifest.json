@@ -14,5 +14,5 @@
   "background.service_worker": {
     "scripts": ["jquery-3.6.1.min.js"]
   },
-  "permissions": ["tabs", "activeTab", "storage", "tabGroups", "unlimitedStorage"]
+  "permissions": ["tabs", "activeTab", "storage", "tabGroups"]
 }
