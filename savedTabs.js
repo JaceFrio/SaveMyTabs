@@ -1,4 +1,6 @@
+// regex for hex colors
 const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
+
 let saveTabsButton = document.getElementsByClassName('saveTabsButton')
 let savedTabContainer = document.getElementsByClassName('.savedTabContainer')
 let colorOneInput = document.querySelector('.colorOne')
@@ -6,6 +8,7 @@ let saveTabsButtonText = document.querySelector('.saveTabsButtonText')
 let colorOption = document.querySelectorAll('.colorOption')
 let colorTheme
 
+// changes the colors of elements to match user chosen color theme
 function setColors(color) {
   colorTheme = color
   let colorOneBackgroundElements = document.querySelectorAll('.colorOneBackground')
@@ -20,6 +23,7 @@ function setColors(color) {
   chrome.storage.sync.set({['color']: color})
 }
 
+// regex tester to confirm color input is in hex
 colorOneInput.addEventListener('change', (event) => {
   let reg=/^([0-9A-Fa-f]{3}){1,2}$/i;
   if (reg.test(colorOneInput.value)) {
@@ -31,14 +35,17 @@ colorOneInput.addEventListener('change', (event) => {
   }
 })
 
+// button hover color matches user chosen color theme
 saveTabsButton[0].addEventListener('mouseover', async function() { 
   saveTabsButtonText.style.color = colorTheme
 })
 
+// button color goes back to white
 saveTabsButton[0].addEventListener('mouseout', async function() { 
   saveTabsButtonText.style.color = 'white'
 })
 
+// takes the color from the color them icon and applies it to all elements
 colorOption.forEach(e => {
   e.addEventListener('click', async function() {
     let color = rgb2hex(getComputedStyle(e).backgroundColor)
@@ -47,6 +54,7 @@ colorOption.forEach(e => {
   })
 })
 
+// load all saved tabs and extension color theme
 document.addEventListener('DOMContentLoaded', async function() {
   let groupLocalStorage = await chrome.storage.sync.get(null)
   let storedGroupKeys = Object.keys(groupLocalStorage)
@@ -93,6 +101,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   }
 })
 
+// save all tabs in current window to chrome storage
 saveTabsButton[0].addEventListener('click', async function() {
   let numSavedTabsSets = 0
   let tabs = await chrome.tabs.query({ currentWindow: true })
@@ -174,6 +183,12 @@ saveTabsButton[0].addEventListener('click', async function() {
     numSavedTabsSets++
     let key = `${fullTimestamp}`
     chrome.storage.sync.set({[key]: [timestamp, groups]})
+
+    let colorSetting = await chrome.storage.sync.get('color')
+    if (colorSetting.color) {
+      colorOneInput.value = colorSetting.color.slice(1)
+      setColors(colorSetting.color)
+    }
 
     chrome.tabs.query({currentWindow: true}, async function (tabs) {
       await chrome.tabs.create({ url: 'chrome://newtab' })
