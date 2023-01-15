@@ -5,7 +5,6 @@ let saveTabsButton = document.getElementsByClassName('saveTabsButton')
 let savedTabContainer = document.getElementsByClassName('.savedTabContainer')
 let colorOneInput = document.querySelector('.colorOne')
 let saveTabsButtonText = document.querySelector('.saveTabsButtonText')
-let colorOption = document.querySelectorAll('.colorOption')
 let colorTheme
 
 // changes the colors of elements to match user chosen color theme
@@ -45,17 +44,23 @@ saveTabsButton[0].addEventListener('mouseout', async function() {
   saveTabsButtonText.style.color = 'white'
 })
 
-// takes the color from the color them icon and applies it to all elements
-colorOption.forEach(e => {
-  e.addEventListener('click', async function() {
-    let color = rgb2hex(getComputedStyle(e).backgroundColor)
-    colorOneInput.value = color.slice(1)
-    setColors(color)
-  })
-})
-
 // load all saved tabs and extension color theme
 document.addEventListener('DOMContentLoaded', async function() {
+  // dynamically create color option buttons
+  for (let i = 1; i < 81; i++) {
+    $('.colorOptionContainer').append(`<div class="colorOption colorOption${i}"></div>`)
+  }
+
+  // takes the color from the color them icon and applies it to all elements
+  let colorOption = document.querySelectorAll('.colorOption')
+  colorOption.forEach(e => {
+    e.addEventListener('click', async function() {
+      let color = rgb2hex(getComputedStyle(e).backgroundColor)
+      colorOneInput.value = color.slice(1)
+      setColors(color)
+    })
+  })
+
   let groupLocalStorage = await chrome.storage.sync.get(null)
   let storedGroupKeys = Object.keys(groupLocalStorage)
   console.log(storedGroupKeys)
