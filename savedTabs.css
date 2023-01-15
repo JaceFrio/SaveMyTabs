@@ -7,10 +7,7 @@ html {
 h1 {
   text-align: center;
 }
-body > h2 {
-  margin-left: 8px;
-}
-body > h3 {
+body > h3, body > h2, .fontColorOptionsContainer {
   margin-left: 8px;
 }
 .saveTabsButton {
@@ -335,3 +332,15 @@ body > h3 {
   color:#ffffff;
   border:2px solid black;
 } */
+.fontColorOptionsContainer {
+  display: grid;
+  grid-template-columns: 160px 160px 
+}
+.fontColorOptions {
+  display: grid;
+  grid-template-columns: 20px 50px 20px 50px;
+  align-self: center;
+}
+label {
+  font-weight: bold;
+}
