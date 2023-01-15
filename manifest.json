@@ -1,0 +1,18 @@
+{
+  "name": "Save My Tabs",
+  "version": "1.0.0",
+  "description": "Saves your tabs for later.",
+  "manifest_version": 3,
+  "author": "Jace B. Henwood",
+  "icons": {
+    "128": "saveMyTabsIcon.png"
+  },
+  "action": {
+    "default_icon": "saveMyTabsIcon.png",
+	  "default_popup": "savedTabs.html"
+  },
+  "background.service_worker": {
+    "scripts": ["jquery-3.6.1.min.js"]
+  },
+  "permissions": ["tabs", "activeTab", "storage", "tabGroups", "unlimitedStorage"]
+}

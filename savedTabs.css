@@ -1,0 +1,337 @@
+html {
+  width: 500px;
+  height: 500px;
+  overflow-y: auto;
+  margin-bottom: 60px;
+}
+h1 {
+  text-align: center;
+}
+body > h2 {
+  margin-left: 8px;
+}
+body > h3 {
+  margin-left: 8px;
+}
+.saveTabsButton {
+  height: 40px;
+  width: 496px;
+  background-color: black;
+  cursor: pointer;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  transition: 0.3s;
+  border: 2px solid black;
+  outline: 2px solid white;
+  z-index: 1000;
+}
+.saveTabsButton:hover {
+  transition-delay: 0.3s;
+  transition: 0.3s ease-out;
+  box-shadow: inset 0 40px 0 0.1px white;
+}
+.saveTabsButton:hover .saveTabsButtonText {
+  color: black;
+}
+.saveTabsButtonText {
+  font-size: 16px;
+  color: white;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  padding: 0;
+  margin: 0;
+  transform: translate(-50%, -50%);
+}
+.savedTabContainer > div {
+  background-color: black;
+  padding: 0px 0px 2px 8px;
+  margin: 4px;
+  transition: 0.3s;
+  cursor: pointer;
+  box-shadow: 3px 6px 4px grey;
+  word-wrap: break-word;
+}
+.savedTabContainer > div:hover {
+  background-color: #383838;
+  box-shadow: 5px 10px 8px grey;
+  transition: 0.3s;
+  -webkit-transform: scale(1.01);
+  -ms-transform: scale(1.01);
+  transform: scale(1.01);
+}
+.savedTabContainer > div > div > p, .savedTabContainer > div > h2, .savedTabContainer > div > h3 {
+  color: white;
+}
+.footerSpacer {
+  padding-top: 50px;
+}
+.colorOptionContainer{
+  margin-left: 8px;
+  display: grid;
+  grid-template-columns: repeat(10, 30px);
+  row-gap: 10px;
+}
+.colorOption {
+  height: 20px;
+  width: 20px;
+  box-shadow: 1px 3px 2px grey;
+}
+.colorOption:hover {
+  cursor: pointer;
+  box-shadow: 4px 8px 6px grey;
+  transition: 0.2s;
+  -webkit-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  transform: scale(1.1);
+}
+.colorOption1 {
+  background-color:#000000;
+}
+.colorOption2 {
+  background-color:#434343;
+}
+.colorOption3 {
+  background-color:#666666;
+}
+.colorOption4 {
+  background-color:#999999;
+}
+.colorOption5 {
+  background-color:#b7b7b7;
+}
+.colorOption6 {
+  background-color:#cccccc;
+}
+.colorOption7 {
+  background-color:#d9d9d9;
+}
+.colorOption8 {
+  background-color:#efefef;
+}
+.colorOption9 {
+  background-color:#f3f3f3;
+}
+.colorOption10 {
+  background-color:#ffffff;
+}
+.colorOption11 {
+  background-color:#980000;
+}
+.colorOption12 {
+  background-color:#ff0000;
+}
+.colorOption13 {
+  background-color:#ff9900;
+}
+.colorOption14 {
+  background-color:#ffff00;
+}
+.colorOption15 {
+  background-color:#00ff00;
+}
+.colorOption16 {
+  background-color:#00ffff;
+}
+.colorOption17 {
+  background-color:#4a86e8;
+}
+.colorOption18 {
+  background-color:#0000ff;
+}
+.colorOption19 {
+  background-color:#9900ff;
+}
+.colorOption20 {
+  background-color:#ff00ff;
+}
+.colorOption21 {
+  background-color:#e6b8af;
+}
+.colorOption22 {
+  background-color:#f4cccc;
+}
+.colorOption23 {
+  background-color:#fce5cd;
+}
+.colorOption24 {
+  background-color:#fff2cc;
+}
+.colorOption25 {
+  background-color:#d9ead3;
+}
+.colorOption26 {
+  background-color:#d0e0e3;
+}
+.colorOption27 {
+  background-color:#c9daf8;
+}
+.colorOption28 {
+  background-color:#cfe2f3;
+}
+.colorOption29 {
+  background-color:#d9d2e9;
+}
+.colorOption30 {
+  background-color:#ead1dc;
+}
+.colorOption31 {
+  background-color:#dd7e6b;
+}
+.colorOption32 {
+  background-color:#ea9999;
+}
+.colorOption33 {
+  background-color:#f9cb9c;
+}
+.colorOption34 {
+  background-color:#ffe599;
+}
+.colorOption35 {
+  background-color:#b6d7a8;
+}
+.colorOption36 {
+  background-color:#a2c4c9;
+}
+.colorOption37 {
+  background-color:#a4c2f4;
+}
+.colorOption38 {
+  background-color:#9fc5e8;
+}
+.colorOption39 {
+  background-color:#b4a7d6;
+}
+.colorOption40 {
+  background-color:#d5a6bd;
+}
+.colorOption41 {
+  background-color:#cc4125;
+}
+.colorOption42 {
+  background-color:#e06666;
+}
+.colorOption43 {
+  background-color:#f6b26b;
+}
+.colorOption44 {
+  background-color:#ffd966;
+}
+.colorOption45 {
+  background-color:#93c47d;
+}
+.colorOption46 {
+  background-color:#76a5af;
+}
+.colorOption47 {
+  background-color:#6d9eeb;
+}
+.colorOption48 {
+  background-color:#6fa8dc;
+}
+.colorOption49 {
+  background-color:#8e7cc3;
+}
+.colorOption50 {
+  background-color:#c27ba0;
+}
+.colorOption51 {
+  background-color:#a61c00;
+}
+.colorOption52 {
+  background-color:#cc0000;
+}
+.colorOption53 {
+  background-color:#e69138;
+}
+.colorOption54 {
+  background-color:#f1c232;
+}
+.colorOption55 {
+  background-color:#6aa84f;
+}
+.colorOption56 {
+  background-color:#45818e;
+}
+.colorOption57 {
+  background-color:#3c78d8;
+}
+.colorOption58 {
+  background-color:#3d85c6;
+}
+.colorOption59 {
+  background-color:#674ea7;
+}
+.colorOption60 {
+  background-color:#a64d79;
+}
+.colorOption61 {
+  background-color:#85200c;
+}
+.colorOption62 {
+  background-color:#990000;
+}
+.colorOption63 {
+  background-color:#b45f06;
+}
+.colorOption64 {
+  background-color:#bf9000;
+}
+.colorOption65 {
+  background-color:#38761d;
+}
+.colorOption66 {
+  background-color:#134f5c;
+}
+.colorOption67 {
+  background-color:#1155cc;
+}
+.colorOption68 {
+  background-color:#0b5394;
+}
+.colorOption69 {
+  background-color:#351c75;
+}
+.colorOption70 {
+  background-color:#741b47;
+}
+.colorOption71 {
+  background-color:#5b0f00;
+}
+.colorOption72 {
+  background-color:#660000;
+}
+.colorOption73 {
+  background-color:#783f04;
+}
+.colorOption74 {
+  background-color:#7f6000;
+}
+.colorOption75 {
+  background-color:#274e13;
+}
+.colorOption76 {
+  background-color:#0c343d;
+}
+.colorOption77 {
+  background-color:#1c4587;
+}
+.colorOption78 {
+  background-color:#073763;
+}
+.colorOption79 {
+  background-color:#20124d;
+}
+.colorOption80 {
+  background-color:#4c1130;
+}
+/* css for a sqaure with two colors in it split diagonally.
+.colorOption81 {
+  background:#000000;
+  background: linear-gradient(to right bottom, #000000 50%, #ffffff 50%);
+  height: 20px;
+  width: 20px;
+  color:#ffffff;
+  border:2px solid black;
+} */
