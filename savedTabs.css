@@ -344,3 +344,13 @@ body > h3, body > h2, .fontColorOptionsContainer {
 label {
   font-weight: bold;
 }
+.paypalDono {
+  cursor: pointer;
+  margin-left: 160px;
+}
+.settings {
+  margin-left: 80px;
+}
+.colorThemeText {
+  margin-left: 8px;
+}

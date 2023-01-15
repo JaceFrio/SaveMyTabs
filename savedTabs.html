@@ -13,20 +13,32 @@
   </div>
   <div class="savedTabContainer"></div>
   <h2 class="colorOneText">Settings</h2>
-  <h3 class="colorOneText">
-    Color Theme # 
-    <input type="text" class="colorOne">
-  </h3>
-  <div class="colorOptionContainer"></div>
-  <div class="fontColorOptionsContainer">
-    <h3 class="colorOneText"> Font Color </h3>
-    <div class="fontColorOptions">
-      <input type="radio" id="blackFont" name="fontColor" value="black">
-      <label for="blackFont">Black</label>
-      <input type="radio" id="whiteFont" name="fontColor" value="white" checked>
-      <label for="whiteFont">White</label>
+  <div class="settings">
+    <h3 class="colorOneText colorThemeText">
+      Color Theme # 
+      <input type="text" class="colorOne">
+    </h3>
+    <div class="colorOptionContainer"></div>
+    <div class="fontColorOptionsContainer">
+      <h3 class="colorOneText"> Font Color </h3>
+      <div class="fontColorOptions">
+        <input type="radio" id="blackFont" name="fontColor" value="black">
+        <label for="blackFont" class="colorOneText">Black</label>
+        <input type="radio" id="whiteFont" name="fontColor" value="white" checked>
+        <label for="whiteFont" class="colorOneText">White</label>
+      </div>
     </div>
   </div>
+  <h3 class="colorOneText" style="margin-left: 90px;"> Enjoying the extension? Consider donating! </h3>
+  <!-- https://www.paypal.com/donate/?business=DGXB256H3GFCG&amount=1&no_recurring=0&currency_code=USD -->
+  <form action="https://www.paypal.com/donate" method="post" target="_top" class="paypalDono">
+    <input type="hidden" name="business" value="DGXB256H3GFCG" />
+    <input type="hidden" name="amount" value="1" />
+    <input type="hidden" name="no_recurring" value="0" />
+    <input type="hidden" name="currency_code" value="USD" />
+    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+    <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+  </form>    
   <div class="footerSpacer"></div>
   <script src="./savedTabs.js"></script>
 </body>

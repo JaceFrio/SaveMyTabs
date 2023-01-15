@@ -3,6 +3,7 @@
 // regex for hex colors
 const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
 
+let paypalDono = document.querySelector('.paypalDono')
 let saveTabsButton = document.getElementsByClassName('saveTabsButton')
 let savedTabContainer = document.getElementsByClassName('.savedTabContainer')
 let colorOneInput = document.querySelector('.colorOne')
@@ -44,6 +45,10 @@ saveTabsButton[0].addEventListener('mouseover', async function() {
 // button color goes back to white
 saveTabsButton[0].addEventListener('mouseout', async function() { 
   saveTabsButtonText.style.color = 'white'
+})
+
+paypalDono.addEventListener('click', async function() {
+  await chrome.tabs.create({ url: "https://www.paypal.com/donate/?business=DGXB256H3GFCG&amount=1&no_recurring=0&currency_code=USD" })
 })
 
 // load all saved tabs and extension color theme
