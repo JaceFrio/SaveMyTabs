@@ -199,6 +199,7 @@ saveTabsButton[0].addEventListener('click', async function() {
   }
 })
 
+// take saved tabs and load them into the current window with their groups
 $(document).on('click', 'body > div.savedTabContainer > div', async function(e) {
   let groupKey = await e.currentTarget.className.slice(0, -19)
   let storedValue = await chrome.storage.sync.get(groupKey)
