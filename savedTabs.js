@@ -1,5 +1,3 @@
-// TODO: add font color radio button functionality
-
 // regex for hex colors
 const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
 
@@ -8,6 +6,8 @@ let saveTabsButton = document.getElementsByClassName('saveTabsButton')
 let savedTabContainer = document.getElementsByClassName('.savedTabContainer')
 let colorOneInput = document.querySelector('.colorOne')
 let saveTabsButtonText = document.querySelector('.saveTabsButtonText')
+let whiteFontRadio = document.querySelector('#whiteFont')
+let blackFontRadio = document.querySelector('#blackFont')
 let colorTheme
 
 // changes the colors of elements to match user chosen color theme
@@ -51,6 +51,31 @@ paypalDono.addEventListener('click', async function() {
   await chrome.tabs.create({ url: "https://www.paypal.com/donate/?business=DGXB256H3GFCG&amount=1&no_recurring=0&currency_code=USD" })
 })
 
+function changeFontColor(color) {
+  let pTexts = document.querySelectorAll('.savedTabContainer > div > div > p')
+  let h2Texts = document.querySelectorAll('.savedTabContainer > div > h2')
+  let h3Texts = document.querySelectorAll('.savedTabContainer > div > h3')
+  for (pText of pTexts) {
+    pText.style.color = color
+  }
+  for (h2Text of h2Texts) {
+    h2Text.style.color = color
+  }
+  for (h3Text of h3Texts) {
+    h3Text.style.color = color
+  }
+}
+
+whiteFontRadio.addEventListener('click', async function() {
+  changeFontColor('white')
+  chrome.storage.sync.set({['fontColor']: 'white'})
+})
+
+blackFontRadio.addEventListener('click', async function() {
+  changeFontColor('black')
+  chrome.storage.sync.set({['fontColor']: 'black'})
+})
+
 // load all saved tabs and extension color theme
 document.addEventListener('DOMContentLoaded', async function() {
   // dynamically create color option buttons
@@ -72,7 +97,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   let storedGroupKeys = Object.keys(groupLocalStorage)
   console.log(storedGroupKeys)
   for (storedGroupKey of storedGroupKeys) {
-    if (storedGroupKey !== 'color') {
+    if (storedGroupKey !== 'color' && storedGroupKey !== 'fontColor') {
       let storedGroups = groupLocalStorage[storedGroupKey]
       let savedTabsSetHTML = ''
       savedTabsSetHTML += `<div class="${storedGroupKey} colorOneBackground">`
@@ -110,6 +135,15 @@ document.addEventListener('DOMContentLoaded', async function() {
   if (colorSetting.color) {
     colorOneInput.value = colorSetting.color.slice(1)
     setColors(colorSetting.color)
+  }
+
+  let fontColorOption = await chrome.storage.sync.get('fontColor')
+  changeFontColor(fontColorOption.fontColor)
+  if (fontColorOption.fontColor == 'white') {
+    whiteFontRadio.checked = true
+  }
+  else if (fontColorOption.fontColor == 'black') {
+    blackFontRadio.checked = true
   }
 })
 
