@@ -347,6 +347,7 @@ label {
 .paypalDono {
   cursor: pointer;
   margin-left: 160px;
+  width: 160px;
 }
 .settings {
   margin-left: 80px;

@@ -95,7 +95,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   let groupLocalStorage = await chrome.storage.sync.get(null)
   let storedGroupKeys = Object.keys(groupLocalStorage)
-  console.log(storedGroupKeys)
   for (storedGroupKey of storedGroupKeys) {
     if (storedGroupKey !== 'color' && storedGroupKey !== 'fontColor') {
       let storedGroups = groupLocalStorage[storedGroupKey]
