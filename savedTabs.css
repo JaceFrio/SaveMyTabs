@@ -355,3 +355,6 @@ label {
 .colorThemeText {
   margin-left: 8px;
 }
+input[type=radio] {
+  cursor: pointer;
+}
