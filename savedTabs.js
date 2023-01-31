@@ -9,6 +9,7 @@ let saveTabsButtonText = document.querySelector('.saveTabsButtonText')
 let whiteFontRadio = document.querySelector('#whiteFont')
 let blackFontRadio = document.querySelector('#blackFont')
 let colorTheme
+let bwFontColor
 
 // changes the colors of elements to match user chosen color theme
 function setColors(color) {
@@ -44,7 +45,7 @@ saveTabsButton[0].addEventListener('mouseover', async function() {
 
 // button color goes back to white
 saveTabsButton[0].addEventListener('mouseout', async function() { 
-  saveTabsButtonText.style.color = 'white'
+  saveTabsButtonText.style.color = bwFontColor
 })
 
 paypalDono.addEventListener('click', async function() {
@@ -52,6 +53,7 @@ paypalDono.addEventListener('click', async function() {
 })
 
 function changeFontColor(color) {
+  bwFontColor = color
   let pTexts = document.querySelectorAll('.savedTabContainer > div > div > p')
   let h2Texts = document.querySelectorAll('.savedTabContainer > div > h2')
   let h3Texts = document.querySelectorAll('.savedTabContainer > div > h3')
@@ -64,6 +66,7 @@ function changeFontColor(color) {
   for (h3Text of h3Texts) {
     h3Text.style.color = color
   }
+  saveTabsButtonText.style.color = color
 }
 
 whiteFontRadio.addEventListener('click', async function() {
