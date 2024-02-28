@@ -17,3 +17,8 @@ Match your Chrome theme using the color theme customization options in the exten
 
 ## Notes
 This extension currently isn't published as there are multiple improvements that I would like to make.
+
+## TODOs
+- Update savedTabs.js to completely use jQuery.
+- Update color customization to a toggle between color theme and font color.
+- Update tab session css to show grouping better.
