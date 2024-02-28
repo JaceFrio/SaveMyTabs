@@ -12,7 +12,7 @@
 	  "default_popup": "savedTabs.html"
   },
   "background.service_worker": {
-    "scripts": ["jquery-3.6.1.min.js"]
+    "scripts": ["jquery-3.7.1.min.js"]
   },
   "permissions": ["tabs", "activeTab", "storage", "tabGroups"]
 }

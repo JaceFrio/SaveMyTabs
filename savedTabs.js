@@ -1,62 +1,57 @@
 // regex for hex colors
 const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
 
-let paypalDono = document.querySelector('.paypalDono')
-let saveTabsButton = document.getElementsByClassName('saveTabsButton')
-let savedTabContainer = document.getElementsByClassName('.savedTabContainer')
-let colorOneInput = document.querySelector('.colorOne')
-let saveTabsButtonText = document.querySelector('.saveTabsButtonText')
-let whiteFontRadio = document.querySelector('#whiteFont')
-let blackFontRadio = document.querySelector('#blackFont')
+let paypalDono = $('.paypalDono')
+let saveTabsButton = $('.saveTabsButton')
+let savedTabContainer = $('.savedTabContainer')
+let colorOneInput = $('.colorOne')
+let saveTabsButtonText = $('.saveTabsButtonText')
+let whiteFontRadio = $('#whiteFont')
+let blackFontRadio = $('#blackFont')
 let colorTheme
 let bwFontColor
 
 // changes the colors of elements to match user chosen color theme
 function setColors(color) {
   colorTheme = color
-  let colorOneBackgroundElements = document.querySelectorAll('.colorOneBackground')
-  colorOneBackgroundElements.forEach(colorOneBackgroundElement => {
-    colorOneBackgroundElement.style.backgroundColor = color
-  })
-  let colorOneTextElements = document.querySelectorAll('.colorOneText')
-  colorOneTextElements.forEach(colorOneTextElement => {
-    colorOneTextElement.style.color = color
-  })
-  saveTabsButton[0].style.border = '2px solid ' + color
+  $('.colorOneBackground').css({backgroundColor: `${color}`})
+  $('.colorOneText').css({color: `${color}`})
+  saveTabsButton.css({border: `2px solid ${color}`})
   chrome.storage.sync.set({['color']: color})
 }
 
 // regex tester to confirm color input is in hex
-colorOneInput.addEventListener('change', (event) => {
+colorOneInput.on('change', () => {
   let reg=/^([0-9A-Fa-f]{3}){1,2}$/i;
-  if (reg.test(colorOneInput.value)) {
-    let color = '#' + colorOneInput.value
+  if (reg.test(colorOneInput.val())) {
+    let color = '#' + colorOneInput.val()
     setColors(color)
+    console.log('setting new color')
   }
   else {
-    colorOneInput.value = colorTheme.slice(1)
+    colorOneInput.val(colorTheme.slice(1))
   }
 })
 
 // button hover color matches user chosen color theme
-saveTabsButton[0].addEventListener('mouseover', async function() { 
-  saveTabsButtonText.style.color = colorTheme
+saveTabsButton.on('mouseover', async () => { 
+  saveTabsButtonText.css({color: `${colorTheme}`})
 })
 
 // button color goes back to white
-saveTabsButton[0].addEventListener('mouseout', async function() { 
-  saveTabsButtonText.style.color = bwFontColor
+saveTabsButton.on('mouseout', async () => { 
+  saveTabsButtonText.css({color: `${bwFontColor}`})
 })
 
-paypalDono.addEventListener('click', async function() {
+paypalDono.on('click', async () => {
   await chrome.tabs.create({ url: "https://www.paypal.com/donate/?business=DGXB256H3GFCG&amount=1&no_recurring=0&currency_code=USD" })
 })
 
 function changeFontColor(color) {
   bwFontColor = color
-  let pTexts = document.querySelectorAll('.savedTabContainer > div > div > p')
-  let h2Texts = document.querySelectorAll('.savedTabContainer > div > h2')
-  let h3Texts = document.querySelectorAll('.savedTabContainer > div > h3')
+  let pTexts = $('.savedTabContainer > div > div > p')
+  let h2Texts = $('.savedTabContainer > div > h2')
+  let h3Texts = $('.savedTabContainer > div > h3')
   for (pText of pTexts) {
     pText.style.color = color
   }
@@ -66,34 +61,31 @@ function changeFontColor(color) {
   for (h3Text of h3Texts) {
     h3Text.style.color = color
   }
-  saveTabsButtonText.style.color = color
+  saveTabsButtonText.css({color: `${color}`})
 }
 
-whiteFontRadio.addEventListener('click', async function() {
+whiteFontRadio.on('click', async () => {
   changeFontColor('white')
   chrome.storage.sync.set({['fontColor']: 'white'})
 })
 
-blackFontRadio.addEventListener('click', async function() {
+blackFontRadio.on('click', async () => {
   changeFontColor('black')
   chrome.storage.sync.set({['fontColor']: 'black'})
 })
 
 // load all saved tabs and extension color theme
-document.addEventListener('DOMContentLoaded', async function() {
+$(document).on('DOMContentLoaded', async () => {
   // dynamically create color option buttons
   for (let i = 1; i < 81; i++) {
     $('.colorOptionContainer').append(`<div class="colorOption colorOption${i}"></div>`)
   }
 
-  // takes the color from the color them icon and applies it to all elements
-  let colorOption = document.querySelectorAll('.colorOption')
-  colorOption.forEach(e => {
-    e.addEventListener('click', async function() {
-      let color = rgb2hex(getComputedStyle(e).backgroundColor)
-      colorOneInput.value = color.slice(1)
+  // takes the color from the color theme icon and applies it to all elements
+  $('.colorOption').on('click', async (e) => {
+      let color = rgb2hex($(e.target).css('background-color'))
+      colorOneInput.val(color.slice(1))
       setColors(color)
-    })
   })
 
   let groupLocalStorage = await chrome.storage.sync.get(null)
@@ -135,7 +127,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   let colorSetting = await chrome.storage.sync.get('color')
   if (colorSetting.color) {
-    colorOneInput.value = colorSetting.color.slice(1)
+    colorOneInput.val(colorSetting.color.slice(1))
     setColors(colorSetting.color)
   }
 
@@ -150,7 +142,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 })
 
 // save all tabs in current window to chrome storage
-saveTabsButton[0].addEventListener('click', async function() {
+saveTabsButton.on('click', async () => {
   let numSavedTabsSets = 0
   let tabs = await chrome.tabs.query({ currentWindow: true })
   if (tabs.length > 1) {
@@ -234,11 +226,11 @@ saveTabsButton[0].addEventListener('click', async function() {
 
     let colorSetting = await chrome.storage.sync.get('color')
     if (colorSetting.color) {
-      colorOneInput.value = colorSetting.color.slice(1)
+      colorOneInput.val(colorSetting.color.slice(1))
       setColors(colorSetting.color)
     }
 
-    chrome.tabs.query({currentWindow: true}, async function (tabs) {
+    chrome.tabs.query({currentWindow: true}, async (tabs) => {
       await chrome.tabs.create({ url: 'chrome://newtab' })
       for (var i = 0; i < tabs.length; i++) {
           chrome.tabs.remove(tabs[i].id)
@@ -248,7 +240,7 @@ saveTabsButton[0].addEventListener('click', async function() {
 })
 
 // take saved tabs and load them into the current window with their groups
-$(document).on('click', 'body > div.savedTabContainer > div', async function(e) {
+$(document).on('click', 'body > div.savedTabContainer > div', async (e) => {
   let groupKey = await e.currentTarget.className.slice(0, -19)
   let storedValue = await chrome.storage.sync.get(groupKey)
   let storedGroups = Object.values(storedValue)[0]
@@ -274,7 +266,7 @@ $(document).on('click', 'body > div.savedTabContainer > div', async function(e) 
   }
   e.currentTarget.remove()
   chrome.storage.sync.remove(groupKey)
-  chrome.tabs.query({index: 0}, async function(firstTab) {
+  chrome.tabs.query({index: 0}, async (firstTab) => {
     await chrome.tabs.update(firstTab[0].id, {selected: true, highlighted: true, active: true})
   })
 })
