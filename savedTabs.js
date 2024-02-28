@@ -134,10 +134,10 @@ $(document).on('DOMContentLoaded', async () => {
   let fontColorOption = await chrome.storage.sync.get('fontColor')
   changeFontColor(fontColorOption.fontColor)
   if (fontColorOption.fontColor == 'white') {
-    whiteFontRadio.checked = true
+    whiteFontRadio.attr('checked', true)
   }
-  else if (fontColorOption.fontColor == 'black') {
-    blackFontRadio.checked = true
+  if (fontColorOption.fontColor == 'black') {
+    blackFontRadio.attr('checked', true)
   }
 })
 
