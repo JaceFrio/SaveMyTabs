@@ -104,15 +104,15 @@ $(document).on('DOMContentLoaded', async () => {
       for (storedGroup of storedGroups[1]) {
         if (groupNum == 0) {
           if (storedGroup.length !== 0) {
-            savedTabsSetHTML += `<h3> No Group </h3>`
+            savedTabsSetHTML += `<h3> - No Group </h3>`
           }
         }
         else {
           if (storedGroup[0].groupName != "") {
-            savedTabsSetHTML += `<h3> ${storedGroup[0].groupName} </h3>`
+            savedTabsSetHTML += `<h3> - ${storedGroup[0].groupName} </h3>`
           }
           else {
-            savedTabsSetHTML += `<h3> Group </h3>`
+            savedTabsSetHTML += `<h3> - Group </h3>`
           }
         }
         savedTabsSetHTML += '<div class="groupedTabs">'
