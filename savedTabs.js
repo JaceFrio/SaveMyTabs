@@ -115,7 +115,9 @@ $(document).on('DOMContentLoaded', async () => {
             savedTabsSetHTML += `<h3> - Group </h3>`
           }
         }
-        savedTabsSetHTML += '<div class="groupedTabs">'
+        if (storedGroup.length !== 0) {
+          savedTabsSetHTML += '<div class="groupedTabs">'
+        }
         groupNum++
         for (tab of storedGroup) {
           savedTabsSetHTML += `
@@ -124,7 +126,9 @@ $(document).on('DOMContentLoaded', async () => {
           </div>
           `
         }
-        savedTabsSetHTML += '</div>'
+        if (storedGroup.length !== 0) {
+          savedTabsSetHTML += '</div>'
+        }
       }
       savedTabsSetHTML += `</div>`
       $('.savedTabContainer').append(savedTabsSetHTML)
