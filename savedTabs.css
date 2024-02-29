@@ -7,8 +7,14 @@ html {
 h1 {
   text-align: center;
 }
-body > h3, body > h2, .fontColorOptionsContainer {
-  margin-left: 8px;
+body > div.savedTabContainer > div > h2 {
+  padding-top: 6px;
+}
+body > div.savedTabContainer > div > h3, body > div.savedTabContainer > div > h2 {
+  margin-left: 4px;
+}
+body > h2 > .savedTabContainer {
+  padding-left: 10px;
 }
 .saveTabsButton {
   height: 40px;
@@ -49,6 +55,7 @@ body > h3, body > h2, .fontColorOptionsContainer {
   cursor: pointer;
   box-shadow: 3px 6px 4px grey;
   word-wrap: break-word;
+  border-radius: 25px;
 }
 .savedTabContainer > div:hover {
   background-color: #383838;
@@ -58,8 +65,14 @@ body > h3, body > h2, .fontColorOptionsContainer {
   -ms-transform: scale(1.01);
   transform: scale(1.01);
 }
-.savedTabContainer > div > div > p, .savedTabContainer > div > h2, .savedTabContainer > div > h3 {
+.savedTabContainer > div > div > p, .savedTabContainer > div > h2, .savedTabContainer > div > h3, body > div.savedTabContainer > div > div > div > p {
   color: white;
+}
+.groupedTabs {
+  margin: 0 8px 6px 0;
+  padding: 4px 10px 4px 10px;
+  background-color: rgba(255,255,255,.25);
+  border-radius: 25px;
 }
 .footerSpacer {
   padding-top: 50px;

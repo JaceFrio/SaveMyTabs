@@ -50,10 +50,14 @@ paypalDono.on('click', async () => {
 function changeFontColor(color) {
   bwFontColor = color
   let pTexts = $('.savedTabContainer > div > div > p')
+  let pTexts2 = $('body > div.savedTabContainer > div > div > div > p')
   let h2Texts = $('.savedTabContainer > div > h2')
   let h3Texts = $('.savedTabContainer > div > h3')
   for (pText of pTexts) {
     pText.style.color = color
+  }
+  for (pText2 of pTexts2) {
+    pText2.style.color = color
   }
   for (h2Text of h2Texts) {
     h2Text.style.color = color
@@ -111,6 +115,7 @@ $(document).on('DOMContentLoaded', async () => {
             savedTabsSetHTML += `<h3> Group </h3>`
           }
         }
+        savedTabsSetHTML += '<div class="groupedTabs">'
         groupNum++
         for (tab of storedGroup) {
           savedTabsSetHTML += `
@@ -119,6 +124,7 @@ $(document).on('DOMContentLoaded', async () => {
           </div>
           `
         }
+        savedTabsSetHTML += '</div>'
       }
       savedTabsSetHTML += `</div>`
       $('.savedTabContainer').append(savedTabsSetHTML)
