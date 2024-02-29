@@ -77,6 +77,26 @@ body > h2 > .savedTabContainer {
 .footerSpacer {
   padding-top: 50px;
 }
+.customizationOptions {
+  margin-left: 54px;
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: left;
+}
+.backgroundBtn {
+  background-color: black;
+  color: white;
+}
+.fontBtn {
+  background-color: white;
+  color: black;
+}
+.backgroundBtn, .fontBtn {
+  text-align: center;
+  border: #000000 solid 1px;
+  width: 100px;
+  padding: 4px 0 4px 0;
+}
 .colorOptionContainer{
   margin-left: 8px;
   display: grid;

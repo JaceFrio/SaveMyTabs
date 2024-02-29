@@ -1,15 +1,24 @@
 // regex for hex colors
 const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
 
-let paypalDono = $('.paypalDono')
 let saveTabsButton = $('.saveTabsButton')
-let savedTabContainer = $('.savedTabContainer')
 let colorOneInput = $('.colorOne')
 let saveTabsButtonText = $('.saveTabsButtonText')
-let whiteFontRadio = $('#whiteFont')
-let blackFontRadio = $('#blackFont')
 let colorTheme
-let bwFontColor
+let fontColor
+let currentCustomizationOption = 'background'
+
+let btnOnStyle = {
+  backgroundColor: 'white',
+  color: 'black',
+  cursor: 'pointer'
+}
+
+let btnOffStyle = {
+  backgroundColor: 'black',
+  color: 'white',
+  cursor: 'default'
+}
 
 // changes the colors of elements to match user chosen color theme
 function setColors(color) {
@@ -20,16 +29,39 @@ function setColors(color) {
   chrome.storage.sync.set({['color']: color})
 }
 
+$('.backgroundBtn').on('click', () => {
+  currentCustomizationOption = 'background'
+  $('.backgroundBtn').css(btnOffStyle)
+  $('.fontBtn').css(btnOnStyle)
+  colorOneInput.val(colorTheme.slice(1))
+})
+
+$('.fontBtn').on('click', () => {
+  currentCustomizationOption = 'font'
+  $('.fontBtn').css(btnOffStyle)
+  $('.backgroundBtn').css(btnOnStyle)
+  colorOneInput.val(fontColor.slice(1))
+})
+
 // regex tester to confirm color input is in hex
 colorOneInput.on('change', () => {
   let reg=/^([0-9A-Fa-f]{3}){1,2}$/i;
   if (reg.test(colorOneInput.val())) {
     let color = '#' + colorOneInput.val()
-    setColors(color)
-    console.log('setting new color')
+    if (currentCustomizationOption == 'background') {
+      setColors(color)
+    }
+    if (currentCustomizationOption == 'font') {
+      changeFontColor(color)
+    }
   }
   else {
-    colorOneInput.val(colorTheme.slice(1))
+    if (currentCustomizationOption = 'background') {
+      colorOneInput.val(colorTheme.slice(1))
+    }
+    if (currentCustomizationOption = 'font') {
+      colorOneInput.val(fontColor.slice(1))
+    }
   }
 })
 
@@ -38,17 +70,18 @@ saveTabsButton.on('mouseover', async () => {
   saveTabsButtonText.css({color: `${colorTheme}`})
 })
 
-// button color goes back to white
+// save tabs btn color goes to user chosen font color
 saveTabsButton.on('mouseout', async () => { 
-  saveTabsButtonText.css({color: `${bwFontColor}`})
+  saveTabsButtonText.css({color: `${fontColor}`})
 })
 
-paypalDono.on('click', async () => {
+$('.paypalDono').on('click', async () => {
   await chrome.tabs.create({ url: "https://www.paypal.com/donate/?business=DGXB256H3GFCG&amount=1&no_recurring=0&currency_code=USD" })
 })
 
+// set the font color
 function changeFontColor(color) {
-  bwFontColor = color
+  fontColor = color
   let pTexts = $('.savedTabContainer > div > div > p')
   let pTexts2 = $('body > div.savedTabContainer > div > div > div > p')
   let h2Texts = $('.savedTabContainer > div > h2')
@@ -66,20 +99,14 @@ function changeFontColor(color) {
     h3Text.style.color = color
   }
   saveTabsButtonText.css({color: `${color}`})
+  chrome.storage.sync.set({['fontColor']: `${color}`})
 }
-
-whiteFontRadio.on('click', async () => {
-  changeFontColor('white')
-  chrome.storage.sync.set({['fontColor']: 'white'})
-})
-
-blackFontRadio.on('click', async () => {
-  changeFontColor('black')
-  chrome.storage.sync.set({['fontColor']: 'black'})
-})
 
 // load all saved tabs and extension color theme
 $(document).on('DOMContentLoaded', async () => {
+  // set customization button styles
+  $('.backgroundBtn').css(btnOffStyle)
+  $('.fontBtn').css(btnOnStyle)
   // dynamically create color option buttons
   for (let i = 1; i < 81; i++) {
     $('.colorOptionContainer').append(`<div class="colorOption colorOption${i}"></div>`)
@@ -89,7 +116,12 @@ $(document).on('DOMContentLoaded', async () => {
   $('.colorOption').on('click', async (e) => {
       let color = rgb2hex($(e.target).css('background-color'))
       colorOneInput.val(color.slice(1))
-      setColors(color)
+      if (currentCustomizationOption == 'background') {
+        setColors(color)
+      }
+      if (currentCustomizationOption == 'font') {
+        changeFontColor(color)
+      }
   })
 
   let groupLocalStorage = await chrome.storage.sync.get(null)
@@ -143,12 +175,6 @@ $(document).on('DOMContentLoaded', async () => {
 
   let fontColorOption = await chrome.storage.sync.get('fontColor')
   changeFontColor(fontColorOption.fontColor)
-  if (fontColorOption.fontColor == 'white') {
-    whiteFontRadio.attr('checked', true)
-  }
-  if (fontColorOption.fontColor == 'black') {
-    blackFontRadio.attr('checked', true)
-  }
 })
 
 // save all tabs in current window to chrome storage
