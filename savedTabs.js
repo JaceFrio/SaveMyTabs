@@ -1,19 +1,20 @@
 // regex for hex colors
 const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
 
+// frequently used elements
 let saveTabsButton = $('.saveTabsButton')
 let colorOneInput = $('.colorOne')
 let saveTabsButtonText = $('.saveTabsButtonText')
+
+// color setting variables
 let colorTheme
 let fontColor
 let currentCustomizationOption = 'background'
-
 let btnOnStyle = {
   backgroundColor: 'white',
   color: 'black',
   cursor: 'pointer'
 }
-
 let btnOffStyle = {
   backgroundColor: 'black',
   color: 'white',
@@ -29,6 +30,7 @@ function setColors(color) {
   chrome.storage.sync.set({['color']: color})
 }
 
+// toggle current color customization setting to background color
 $('.backgroundBtn').on('click', () => {
   currentCustomizationOption = 'background'
   $('.backgroundBtn').css(btnOffStyle)
@@ -37,6 +39,7 @@ $('.backgroundBtn').on('click', () => {
   $('.selectedColor').css({backgroundColor: `${colorTheme}`})
 })
 
+// toggle current color customization setting to font color
 $('.fontBtn').on('click', () => {
   currentCustomizationOption = 'font'
   $('.fontBtn').css(btnOffStyle)
@@ -78,6 +81,7 @@ saveTabsButton.on('mouseout', async () => {
   saveTabsButtonText.css({color: `${fontColor}`})
 })
 
+// open link to paypal donation
 $('.paypalDono').on('click', async () => {
   await chrome.tabs.create({ url: "https://www.paypal.com/donate/?business=DGXB256H3GFCG&amount=1&no_recurring=0&currency_code=USD" })
 })
@@ -85,22 +89,10 @@ $('.paypalDono').on('click', async () => {
 // set the font color
 function changeFontColor(color) {
   fontColor = color
-  let pTexts = $('.savedTabContainer > div > div > p')
-  let pTexts2 = $('body > div.savedTabContainer > div > div > div > p')
-  let h2Texts = $('.savedTabContainer > div > h2')
-  let h3Texts = $('.savedTabContainer > div > h3')
-  for (pText of pTexts) {
-    pText.style.color = color
-  }
-  for (pText2 of pTexts2) {
-    pText2.style.color = color
-  }
-  for (h2Text of h2Texts) {
-    h2Text.style.color = color
-  }
-  for (h3Text of h3Texts) {
-    h3Text.style.color = color
-  }
+  $('.savedTabContainer > div > div > p').css({color: `${color}`})
+  $('body > div.savedTabContainer > div > div > div > p').css({color: `${color}`})
+  $('.savedTabContainer > div > h2').css({color: `${color}`})
+  $('.savedTabContainer > div > h3').css({color: `${color}`})
   saveTabsButtonText.css({color: `${color}`})
   chrome.storage.sync.set({['fontColor']: `${color}`})
 }
@@ -128,6 +120,7 @@ $(document).on('DOMContentLoaded', async () => {
       }
   })
 
+  // create user's saved tab group containers
   let groupLocalStorage = await chrome.storage.sync.get(null)
   let storedGroupKeys = Object.keys(groupLocalStorage)
   for (storedGroupKey of storedGroupKeys) {
@@ -171,13 +164,13 @@ $(document).on('DOMContentLoaded', async () => {
     }
   }
 
+  // apply user's saved color settings
   let colorSetting = await chrome.storage.sync.get('color')
   if (colorSetting.color) {
     colorOneInput.val(colorSetting.color.slice(1))
     $('.selectedColor').css({backgroundColor: `${colorSetting.color}`})
     setColors(colorSetting.color)
   }
-
   let fontColorOption = await chrome.storage.sync.get('fontColor')
   changeFontColor(fontColorOption.fontColor)
 })
@@ -224,6 +217,7 @@ saveTabsButton.on('click', async () => {
     }
     let savedTabsSetHTML = ''
     
+    // TODO: update to the easier way to do this
     let date = new Date()
     let time = new Date().toLocaleString('en-US', {
       hour: 'numeric',
@@ -232,6 +226,7 @@ saveTabsButton.on('click', async () => {
     })
     let timestamp = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()} - ${time}`
     let fullTimestamp = `${timestamp} ${date.getSeconds()}`
+
     savedTabsSetHTML += `<div class="${fullTimestamp} colorOneBackground">`
     savedTabsSetHTML += `<h2> ${timestamp} </h2>`
     let groupNum = 0
