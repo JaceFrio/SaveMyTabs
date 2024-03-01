@@ -26,3 +26,5 @@ This extension currently isn't published as there are multiple improvements that
 - ~~Add color box showing the current selected color.~~
 - Update color settings so that users can't select the same color for both options.
 - Update colorOneText class name and related variable names OR implement two color selection option for making gradients.
+- Add option to open groups of tabs individually instead of the entire session of tabs.
+- Add option to open a single tab link.
