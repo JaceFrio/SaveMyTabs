@@ -34,6 +34,7 @@ $('.backgroundBtn').on('click', () => {
   $('.backgroundBtn').css(btnOffStyle)
   $('.fontBtn').css(btnOnStyle)
   colorOneInput.val(colorTheme.slice(1))
+  $('.selectedColor').css({backgroundColor: `${colorTheme}`})
 })
 
 $('.fontBtn').on('click', () => {
@@ -41,6 +42,7 @@ $('.fontBtn').on('click', () => {
   $('.fontBtn').css(btnOffStyle)
   $('.backgroundBtn').css(btnOnStyle)
   colorOneInput.val(fontColor.slice(1))
+  $('.selectedColor').css({backgroundColor: `${fontColor}`})
 })
 
 // regex tester to confirm color input is in hex
@@ -48,6 +50,7 @@ colorOneInput.on('change', () => {
   let reg=/^([0-9A-Fa-f]{3}){1,2}$/i;
   if (reg.test(colorOneInput.val())) {
     let color = '#' + colorOneInput.val()
+    $('.selectedColor').css({backgroundColor: `${color}`})
     if (currentCustomizationOption == 'background') {
       setColors(color)
     }
@@ -116,6 +119,7 @@ $(document).on('DOMContentLoaded', async () => {
   $('.colorOption').on('click', async (e) => {
       let color = rgb2hex($(e.target).css('background-color'))
       colorOneInput.val(color.slice(1))
+      $('.selectedColor').css({backgroundColor: `${color}`})
       if (currentCustomizationOption == 'background') {
         setColors(color)
       }
@@ -170,6 +174,7 @@ $(document).on('DOMContentLoaded', async () => {
   let colorSetting = await chrome.storage.sync.get('color')
   if (colorSetting.color) {
     colorOneInput.val(colorSetting.color.slice(1))
+    $('.selectedColor').css({backgroundColor: `${colorSetting.color}`})
     setColors(colorSetting.color)
   }
 

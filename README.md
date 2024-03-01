@@ -23,3 +23,4 @@ This extension currently isn't published as there are multiple improvements that
 - ~~Update color customization to a toggle between color theme and font color.~~
 - ~~Update tab session css to show grouping better.~~
 - Add size options for saved tab groups, i.e. small, medium, or large.
+- Add color box showing the current selected color.
