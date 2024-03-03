@@ -1,5 +1,5 @@
-// regex for hex colors
 const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
+const hex2rgb = (hex) => hex.match(/[A-Za-z0-9]{2}/g).map((v) => parseInt(v, 16))
 
 // frequently used elements
 let saveTabsButton = $('.saveTabsButton')
@@ -8,6 +8,7 @@ let saveTabsButtonText = $('.saveTabsButtonText')
 
 // color setting variables
 let colorTheme
+let colorThemeWithOpacity
 let fontColor
 let currentCustomizationOption = 'background'
 let btnOnStyle = {
@@ -21,11 +22,33 @@ let btnOffStyle = {
   cursor: 'default'
 }
 
+function setThemeColorOpacity(rgbArr) {
+  let opacity = 0.2
+  let rgba = `rgba(${rgbArr[0]}, ${rgbArr[1]}, ${rgbArr[2]}, ${opacity})`
+  return rgba
+}
+
+function updateBtnStyle() {
+  if (currentCustomizationOption == 'background') {
+    $('.backgroundBtn').css(btnOffStyle)
+    $('.fontBtn').css(btnOnStyle)
+  }
+  if (currentCustomizationOption == 'font') {
+    $('.backgroundBtn').css(btnOnStyle)
+    $('.fontBtn').css(btnOffStyle)
+  }
+}
+
 // changes the colors of elements to match user chosen color theme
 function setColors(color) {
   colorTheme = color
+  colorThemeWithOpacity = setThemeColorOpacity(hex2rgb(colorTheme))
   $('.colorOneBackground').css({backgroundColor: `${color}`})
   $('.colorOneText').css({color: `${color}`})
+  btnOnStyle.backgroundColor = colorThemeWithOpacity
+  btnOnStyle.color = colorTheme
+  btnOffStyle.backgroundColor = colorTheme
+  updateBtnStyle()
   saveTabsButton.css({border: `2px solid ${color}`})
   chrome.storage.sync.set({['color']: color})
 }
@@ -33,8 +56,7 @@ function setColors(color) {
 // toggle current color customization setting to background color
 $('.backgroundBtn').on('click', () => {
   currentCustomizationOption = 'background'
-  $('.backgroundBtn').css(btnOffStyle)
-  $('.fontBtn').css(btnOnStyle)
+  updateBtnStyle()
   colorOneInput.val(colorTheme.slice(1))
   $('.selectedColor').css({backgroundColor: `${colorTheme}`})
 })
@@ -42,8 +64,7 @@ $('.backgroundBtn').on('click', () => {
 // toggle current color customization setting to font color
 $('.fontBtn').on('click', () => {
   currentCustomizationOption = 'font'
-  $('.fontBtn').css(btnOffStyle)
-  $('.backgroundBtn').css(btnOnStyle)
+  updateBtnStyle()
   colorOneInput.val(fontColor.slice(1))
   $('.selectedColor').css({backgroundColor: `${fontColor}`})
 })
@@ -93,6 +114,8 @@ function changeFontColor(color) {
   $('body > div.savedTabContainer > div > div > div > p').css({color: `${color}`})
   $('.savedTabContainer > div > h2').css({color: `${color}`})
   $('.savedTabContainer > div > h3').css({color: `${color}`})
+  btnOffStyle.color = fontColor
+  updateBtnStyle()
   saveTabsButtonText.css({color: `${color}`})
   chrome.storage.sync.set({['fontColor']: `${color}`})
 }
