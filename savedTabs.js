@@ -329,4 +329,3 @@ $(document).on('click', 'body > div.savedTabContainer > div', async (e) => {
     await chrome.tabs.update(firstTab[0].id, {selected: true, highlighted: true, active: true})
   })
 })
-
