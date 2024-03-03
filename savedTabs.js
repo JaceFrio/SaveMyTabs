@@ -14,12 +14,22 @@ let currentCustomizationOption = 'background'
 let btnOnStyle = {
   backgroundColor: 'white',
   color: 'black',
-  cursor: 'pointer'
+  cursor: 'pointer',
+  transition: '0.3s',
+  'box-shadow': 'none'
 }
 let btnOffStyle = {
   backgroundColor: 'black',
   color: 'white',
-  cursor: 'default'
+  cursor: 'default',
+  'box-shadow': 'none'
+}
+let btnHoverStyle = {
+  color: 'black',
+  cursor: 'pointer',
+  'transition-delay': '0.3s',
+  transition: '0.3s ease-out',
+  'box-shadow': 'inset 0 40px 0 0.1px white'
 }
 
 function setThemeColorOpacity(rgbArr) {
@@ -48,6 +58,7 @@ function setColors(color) {
   btnOnStyle.backgroundColor = colorThemeWithOpacity
   btnOnStyle.color = colorTheme
   btnOffStyle.backgroundColor = colorTheme
+  btnHoverStyle.color = colorTheme
   updateBtnStyle()
   saveTabsButton.css({border: `2px solid ${color}`})
   chrome.storage.sync.set({['color']: color})
@@ -68,6 +79,27 @@ $('.fontBtn').on('click', () => {
   colorOneInput.val(fontColor.slice(1))
   $('.selectedColor').css({backgroundColor: `${fontColor}`})
 })
+
+$('.backgroundBtn').hover(() => {
+  if (currentCustomizationOption == 'font') {
+    $('.backgroundBtn').css(btnHoverStyle)
+  }
+}, () => {
+  if (currentCustomizationOption == 'font') {
+    $('.backgroundBtn').css(btnOnStyle)
+  }
+})
+
+$('.fontBtn').hover(() => {
+  if (currentCustomizationOption == 'background') {
+    $('.fontBtn').css(btnHoverStyle)
+  }
+}, () => {
+  if (currentCustomizationOption == 'background') {
+    $('.fontBtn').css(btnOnStyle)
+  }
+})
+
 
 // regex tester to confirm color input is in hex
 colorOneInput.on('change', () => {
